@@ -1,0 +1,5 @@
+node_modules/
+keystore/
+keystore-test/
+.env
+*.log

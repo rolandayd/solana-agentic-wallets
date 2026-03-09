@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580" width="900" height="580">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@400;600;700&amp;display=swap');
+    </style>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e1a"/>
+      <stop offset="100%" style="stop-color:#0d1420"/>
+    </linearGradient>
+    <linearGradient id="agentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2540"/>
+      <stop offset="100%" style="stop-color:#111827"/>
+    </linearGradient>
+    <linearGradient id="walletGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f2027"/>
+      <stop offset="100%" style="stop-color:#0a1628"/>
+    </linearGradient>
+    <linearGradient id="solanaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#9945FF"/>
+      <stop offset="100%" style="stop-color:#14F195"/>
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#14F195;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#14F195;stop-opacity:0.2"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="subtleGlow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#14F195" opacity="0.7"/>
+    </marker>
+    <marker id="arrowheadUp" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <polygon points="8 0, 0 3, 8 6" fill="#9945FF" opacity="0.6"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="580" fill="url(#bgGrad)"/>
+
+  <!-- Subtle grid lines -->
+  <g opacity="0.04" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="100" x2="900" y2="100"/>
+    <line x1="0" y1="200" x2="900" y2="200"/>
+    <line x1="0" y1="300" x2="900" y2="300"/>
+    <line x1="0" y1="400" x2="900" y2="400"/>
+    <line x1="0" y1="500" x2="900" y2="500"/>
+    <line x1="150" y1="0" x2="150" y2="580"/>
+    <line x1="300" y1="0" x2="300" y2="580"/>
+    <line x1="450" y1="0" x2="450" y2="580"/>
+    <line x1="600" y1="0" x2="600" y2="580"/>
+    <line x1="750" y1="0" x2="750" y2="580"/>
+  </g>
+
+  <!-- Title -->
+  <text x="450" y="38" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#14F195" text-anchor="middle" letter-spacing="4" filter="url(#subtleGlow)">SOLANA AGENTIC WALLET — SYSTEM ARCHITECTURE</text>
+  <line x1="160" y1="48" x2="740" y2="48" stroke="#14F195" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- ═══ LAYER LABELS (left side) ═══ -->
+  <text x="22" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#ffffff" opacity="0.3" letter-spacing="2" transform="rotate(-90, 22, 155)">AGENT LAYER</text>
+  <text x="22" y="340" font-family="'JetBrains Mono', monospace" font-size="9" fill="#ffffff" opacity="0.3" letter-spacing="2" transform="rotate(-90, 22, 340)">WALLET LAYER</text>
+  <text x="22" y="510" font-family="'JetBrains Mono', monospace" font-size="9" fill="#9945FF" opacity="0.5" letter-spacing="2" transform="rotate(-90, 22, 510)">SOLANA</text>
+
+  <!-- ═══ AGENT LAYER BACKGROUND ═══ -->
+  <rect x="50" y="62" width="800" height="200" rx="10" fill="#0f1929" stroke="#1e3a5f" stroke-width="1" opacity="0.8"/>
+  <text x="70" y="82" font-family="'JetBrains Mono', monospace" font-size="10" fill="#4a7fa5" letter-spacing="2">STRATEGY / DECISION LAYER</text>
+
+  <!-- Agent 1: TradingAgent -->
+  <rect x="68" y="92" width="170" height="155" rx="8" fill="url(#agentGrad)" stroke="#2a4a7f" stroke-width="1.5"/>
+  <rect x="68" y="92" width="170" height="28" rx="8" fill="#1a3060" opacity="0.8"/>
+  <rect x="68" y="108" width="170" height="12" rx="0" fill="#1a3060" opacity="0.8"/>
+  <text x="153" y="111" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#60a5fa" text-anchor="middle">TradingAgent</text>
+  <text x="153" y="130" font-family="'JetBrains Mono', monospace" font-size="8" fill="#94a3b8" text-anchor="middle">MA Crossover Strategy</text>
+  <text x="153" y="150" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569" text-anchor="middle">tick: 5000ms</text>
+  <rect x="82" y="158" width="142" height="18" rx="4" fill="#0f2040" stroke="#1e4080" stroke-width="1"/>
+  <text x="153" y="171" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">updateState()</text>
+  <rect x="82" y="180" width="142" height="18" rx="4" fill="#0f2040" stroke="#1e4080" stroke-width="1"/>
+  <text x="153" y="193" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">decide() → BUY/SELL/HOLD</text>
+  <rect x="82" y="202" width="142" height="18" rx="4" fill="#0f2040" stroke="#1e4080" stroke-width="1"/>
+  <text x="153" y="215" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">execute() → wallet.transfer()</text>
+  <circle cx="86" cy="106" r="4" fill="#3b82f6" filter="url(#subtleGlow)"/>
+
+  <!-- Agent 2: LiquidityAgent -->
+  <rect x="258" y="92" width="170" height="155" rx="8" fill="url(#agentGrad)" stroke="#2a5f3a" stroke-width="1.5"/>
+  <rect x="258" y="92" width="170" height="28" rx="8" fill="#1a3d25" opacity="0.8"/>
+  <rect x="258" y="108" width="170" height="12" rx="0" fill="#1a3d25" opacity="0.8"/>
+  <text x="343" y="111" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#4ade80" text-anchor="middle">LiquidityAgent</text>
+  <text x="343" y="130" font-family="'JetBrains Mono', monospace" font-size="8" fill="#94a3b8" text-anchor="middle">LP Rebalancing Strategy</text>
+  <text x="343" y="150" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569" text-anchor="middle">tick: 12000ms</text>
+  <rect x="272" y="158" width="142" height="18" rx="4" fill="#0f2018" stroke="#1e4028" stroke-width="1"/>
+  <text x="343" y="171" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">monitor pool ratio</text>
+  <rect x="272" y="180" width="142" height="18" rx="4" fill="#0f2018" stroke="#1e4028" stroke-width="1"/>
+  <text x="343" y="193" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">drift > 4% → REBALANCE</text>
+  <rect x="272" y="202" width="142" height="18" rx="4" fill="#0f2018" stroke="#1e4028" stroke-width="1"/>
+  <text x="343" y="215" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">execute() → wallet.transfer()</text>
+  <circle cx="276" cy="106" r="4" fill="#22c55e" filter="url(#subtleGlow)"/>
+
+  <!-- Agent 3: ArbitrageAgent -->
+  <rect x="448" y="92" width="170" height="155" rx="8" fill="url(#agentGrad)" stroke="#5f3a2a" stroke-width="1.5"/>
+  <rect x="448" y="92" width="170" height="28" rx="8" fill="#3d2510" opacity="0.8"/>
+  <rect x="448" y="108" width="170" height="12" rx="0" fill="#3d2510" opacity="0.8"/>
+  <text x="533" y="111" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#fb923c" text-anchor="middle">ArbitrageAgent</text>
+  <text x="533" y="130" font-family="'JetBrains Mono', monospace" font-size="8" fill="#94a3b8" text-anchor="middle">Dual-Feed Spread Strategy</text>
+  <text x="533" y="150" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569" text-anchor="middle">tick: 4000ms</text>
+  <rect x="462" y="158" width="142" height="18" rx="4" fill="#201408" stroke="#402810" stroke-width="1"/>
+  <text x="533" y="171" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">watch DEX-A + DEX-B</text>
+  <rect x="462" y="180" width="142" height="18" rx="4" fill="#201408" stroke="#402810" stroke-width="1"/>
+  <text x="533" y="193" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">spread > 1.5% → ARBITRAGE</text>
+  <rect x="462" y="202" width="142" height="18" rx="4" fill="#201408" stroke="#402810" stroke-width="1"/>
+  <text x="533" y="215" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748b" text-anchor="middle">execute() → wallet.transfer()</text>
+  <circle cx="466" cy="106" r="4" fill="#f97316" filter="url(#subtleGlow)"/>
+
+  <!-- BaseAgent label -->
+  <rect x="638" y="92" width="170" height="155" rx="8" fill="#0c1520" stroke="#1e2d40" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="723" y="155" font-family="'JetBrains Mono', monospace" font-size="10" fill="#334155" text-anchor="middle">BaseAgent</text>
+  <text x="723" y="173" font-family="'JetBrains Mono', monospace" font-size="8" fill="#1e293b" text-anchor="middle">abstract loop</text>
+  <text x="723" y="191" font-family="'JetBrains Mono', monospace" font-size="8" fill="#1e293b" text-anchor="middle">EventEmitter</text>
+  <text x="723" y="136" font-family="'JetBrains Mono', monospace" font-size="8" fill="#1e293b" text-anchor="middle">extend to</text>
+  <text x="723" y="148" font-family="'JetBrains Mono', monospace" font-size="8" fill="#1e293b" text-anchor="middle">add strategy</text>
+  <text x="723" y="210" font-family="'JetBrains Mono', monospace" font-size="7" fill="#14F195" text-anchor="middle" opacity="0.4">+ custom agents</text>
+
+  <!-- Separation boundary line -->
+  <line x1="50" y1="275" x2="850" y2="275" stroke="#14F195" stroke-width="1" stroke-dasharray="6,4" opacity="0.25"/>
+  <rect x="340" y="266" width="220" height="18" rx="4" fill="#0a0e1a"/>
+  <text x="450" y="278" font-family="'JetBrains Mono', monospace" font-size="9" fill="#14F195" text-anchor="middle" opacity="0.6" letter-spacing="1">— SECURITY BOUNDARY — keys never cross —</text>
+
+  <!-- ═══ WALLET LAYER BACKGROUND ═══ -->
+  <rect x="50" y="290" width="800" height="160" rx="10" fill="#060d18" stroke="#0f3060" stroke-width="1" opacity="0.9"/>
+  <text x="70" y="310" font-family="'JetBrains Mono', monospace" font-size="10" fill="#1e5080" letter-spacing="2">WALLET / CRYPTOGRAPHY LAYER</text>
+
+  <!-- WalletManager -->
+  <rect x="68" y="318" width="180" height="118" rx="8" fill="url(#walletGrad)" stroke="#0f4080" stroke-width="1.5"/>
+  <text x="158" y="337" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle">WalletManager</text>
+  <text x="158" y="354" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569" text-anchor="middle">fleet orchestration</text>
+  <text x="158" y="374" font-family="'JetBrains Mono', monospace" font-size="8" fill="#334155" text-anchor="middle">loadAgents(ids[])</text>
+  <text x="158" y="389" font-family="'JetBrains Mono', monospace" font-size="8" fill="#334155" text-anchor="middle">getPortfolioSummary()</text>
+  <text x="158" y="404" font-family="'JetBrains Mono', monospace" font-size="8" fill="#334155" text-anchor="middle">fundAllAgents(sol)</text>
+  <text x="158" y="419" font-family="'JetBrains Mono', monospace" font-size="8" fill="#334155" text-anchor="middle">getWallet(agentId)</text>
+
+  <!-- AgentWallet (main) -->
+  <rect x="278" y="318" width="380" height="118" rx="8" fill="url(#walletGrad)" stroke="#0f5040" stroke-width="2"/>
+  <rect x="278" y="318" width="380" height="26" rx="8" fill="#0a2535" opacity="0.9"/>
+  <rect x="278" y="332" width="380" height="12" rx="0" fill="#0a2535" opacity="0.9"/>
+  <text x="468" y="336" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#14F195" text-anchor="middle" filter="url(#subtleGlow)">AgentWallet</text>
+  <text x="468" y="354" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569" text-anchor="middle">AES-256-GCM · PBKDF2(100k) · Ed25519 · 0o600 permissions</text>
+
+  <!-- Wallet method pills -->
+  <rect x="290" y="362" width="108" height="16" rx="3" fill="#051520" stroke="#0f3040" stroke-width="1"/>
+  <text x="344" y="374" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#0ea5e9" text-anchor="middle">create() / load()</text>
+
+  <rect x="406" y="362" width="108" height="16" rx="3" fill="#051520" stroke="#0f3040" stroke-width="1"/>
+  <text x="460" y="374" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#0ea5e9" text-anchor="middle">transferSOL(to, amt)</text>
+
+  <rect x="522" y="362" width="124" height="16" rx="3" fill="#051520" stroke="#0f3040" stroke-width="1"/>
+  <text x="584" y="374" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#0ea5e9" text-anchor="middle">transferSPL(mint, to, amt)</text>
+
+  <rect x="290" y="384" width="108" height="16" rx="3" fill="#051520" stroke="#0f3040" stroke-width="1"/>
+  <text x="344" y="396" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#0ea5e9" text-anchor="middle">getSOLBalance()</text>
+
+  <rect x="406" y="384" width="108" height="16" rx="3" fill="#051520" stroke="#0f3040" stroke-width="1"/>
+  <text x="460" y="396" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#0ea5e9" text-anchor="middle">signTransaction(tx)</text>
+
+  <rect x="522" y="384" width="124" height="16" rx="3" fill="#051520" stroke="#0f3040" stroke-width="1"/>
+  <text x="584" y="396" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#0ea5e9" text-anchor="middle">signMessage(data)</text>
+
+  <!-- Keystore detail -->
+  <rect x="290" y="406" width="356" height="22" rx="4" fill="#020c14" stroke="#0a2535" stroke-width="1"/>
+  <text x="468" y="421" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#1e4060" text-anchor="middle">🔐  keystore: { iv, authTag, encryptedKey } — private key never in plaintext</text>
+
+  <!-- Lock icon area -->
+  <circle cx="643" cy="336" r="10" fill="#0a2020" stroke="#14F195" stroke-width="1" opacity="0.6"/>
+  <text x="643" y="340" font-family="monospace" font-size="11" fill="#14F195" text-anchor="middle" opacity="0.7">🔒</text>
+
+  <!-- ═══ SOLANA LAYER ═══ -->
+  <rect x="50" y="468" width="800" height="80" rx="10" fill="#08030f" stroke="#2d0060" stroke-width="1"/>
+  <rect x="50" y="468" width="800" height="80" rx="10" fill="url(#solanaGrad)" opacity="0.04"/>
+
+  <!-- Solana logo placeholder + text -->
+  <circle cx="100" cy="508" r="20" fill="#1a0030" stroke="#9945FF" stroke-width="1.5" opacity="0.8"/>
+  <text x="100" y="513" font-family="monospace" font-size="14" fill="#9945FF" text-anchor="middle" opacity="0.9">◎</text>
+
+  <text x="140" y="500" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#9945FF" opacity="0.9">Solana</text>
+  <text x="140" y="518" font-family="'JetBrains Mono', monospace" font-size="9" fill="#64748b">Devnet  ·  Ed25519 signatures  ·  SPL tokens  ·  JSON RPC API</text>
+
+  <!-- Network badges -->
+  <rect x="420" y="484" width="80" height="20" rx="4" fill="#1a0030" stroke="#9945FF" stroke-width="1" opacity="0.7"/>
+  <text x="460" y="498" font-family="'JetBrains Mono', monospace" font-size="8" fill="#9945FF" text-anchor="middle">SystemProgram</text>
+
+  <rect x="510" y="484" width="80" height="20" rx="4" fill="#001a10" stroke="#14F195" stroke-width="1" opacity="0.7"/>
+  <text x="550" y="498" font-family="'JetBrains Mono', monospace" font-size="8" fill="#14F195" text-anchor="middle">SPL Token</text>
+
+  <rect x="600" y="484" width="80" height="20" rx="4" fill="#1a0030" stroke="#9945FF" stroke-width="1" opacity="0.7"/>
+  <text x="640" y="498" font-family="'JetBrains Mono', monospace" font-size="8" fill="#9945FF" text-anchor="middle">JSON RPC</text>
+
+  <rect x="690" y="484" width="80" height="20" rx="4" fill="#001a10" stroke="#14F195" stroke-width="1" opacity="0.7"/>
+  <text x="730" y="498" font-family="'JetBrains Mono', monospace" font-size="8" fill="#14F195" text-anchor="middle">Devnet</text>
+
+  <text x="450" y="530" font-family="'JetBrains Mono', monospace" font-size="8" fill="#334155" text-anchor="middle">sendAndConfirmTransaction() · confirmed commitment · 60s timeout</text>
+
+  <!-- ═══ ARROWS: Agent → Wallet ═══ -->
+  <!-- trader-alpha down arrow -->
+  <line x1="153" y1="248" x2="153" y2="265" stroke="#14F195" stroke-width="1.5" opacity="0.4" marker-end="url(#arrowhead)"/>
+  <line x1="153" y1="270" x2="370" y2="310" stroke="#14F195" stroke-width="1" opacity="0.2" stroke-dasharray="3,3"/>
+
+  <!-- LiquidityAgent down arrow -->
+  <line x1="343" y1="248" x2="343" y2="265" stroke="#14F195" stroke-width="1.5" opacity="0.4" marker-end="url(#arrowhead)"/>
+  <line x1="343" y1="270" x2="420" y2="310" stroke="#14F195" stroke-width="1" opacity="0.2" stroke-dasharray="3,3"/>
+
+  <!-- ArbitrageAgent down arrow -->
+  <line x1="533" y1="248" x2="533" y2="265" stroke="#14F195" stroke-width="1.5" opacity="0.4" marker-end="url(#arrowhead)"/>
+  <line x1="533" y1="270" x2="500" y2="310" stroke="#14F195" stroke-width="1" opacity="0.2" stroke-dasharray="3,3"/>
+
+  <!-- Arrow label -->
+  <text x="450" y="262" font-family="'JetBrains Mono', monospace" font-size="8" fill="#14F195" text-anchor="middle" opacity="0.5">wallet.transfer() — no key access</text>
+
+  <!-- ═══ ARROWS: Wallet → Solana ═══ -->
+  <line x1="468" y1="438" x2="468" y2="460" stroke="#9945FF" stroke-width="1.5" opacity="0.5" marker-end="url(#arrowhead)"/>
+  <text x="530" y="456" font-family="'JetBrains Mono', monospace" font-size="8" fill="#9945FF" opacity="0.5">sign + broadcast</text>
+
+  <!-- WalletManager → AgentWallet -->
+  <line x1="248" y1="377" x2="278" y2="377" stroke="#38bdf8" stroke-width="1" opacity="0.4" marker-end="url(#arrowhead)"/>
+  <text x="263" y="372" font-family="'JetBrains Mono', monospace" font-size="7" fill="#38bdf8" text-anchor="middle" opacity="0.4">1:N</text>
+
+  <!-- ═══ LEGEND ═══ -->
+  <rect x="672" y="318" width="162" height="118" rx="8" fill="#050a12" stroke="#0f1e30" stroke-width="1"/>
+  <text x="753" y="334" font-family="'JetBrains Mono', monospace" font-size="8" fill="#334155" text-anchor="middle" letter-spacing="2">LEGEND</text>
+  <circle cx="690" cy="350" r="4" fill="#3b82f6"/>
+  <text x="700" y="354" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">TradingAgent</text>
+  <circle cx="690" cy="368" r="4" fill="#22c55e"/>
+  <text x="700" y="372" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">LiquidityAgent</text>
+  <circle cx="690" cy="386" r="4" fill="#f97316"/>
+  <text x="700" y="390" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">ArbitrageAgent</text>
+  <line x1="686" y1="404" x2="696" y2="404" stroke="#14F195" stroke-width="1.5" opacity="0.7"/>
+  <text x="700" y="408" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">signing request</text>
+  <line x1="686" y1="420" x2="696" y2="420" stroke="#14F195" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+  <text x="700" y="424" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">security boundary</text>
+
+</svg>

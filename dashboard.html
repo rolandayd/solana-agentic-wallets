@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Solana Agentic Wallet Fleet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080c10;
+    --panel:     #0d1117;
+    --border:    #1a2332;
+    --green:     #00ff88;
+    --red:       #ff4466;
+    --blue:      #4d9fff;
+    --yellow:    #ffcc00;
+    --purple:    #a855f7;
+    --text:      #e2e8f0;
+    --muted:     #64748b;
+    --mono:      'Space Mono', monospace;
+    --sans:      'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID NOISE BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,136,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,136,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--green);
+  }
+  .logo-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--green), #00cc66);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,255,136,0.08);
+    border: 1px solid rgba(0,255,136,0.2);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--green);
+  }
+  .pulse-dot {
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+  .network-pill {
+    background: rgba(77,159,255,0.1);
+    border: 1px solid rgba(77,159,255,0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--blue);
+  }
+  #uptime-display {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* ── STAT STRIP ── */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 700px) {
+    .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: rgba(0,255,136,0.25); }
+  .stat-label {
+    font-size: 0.68rem;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-sub {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .stat-value.green { color: var(--green); }
+  .stat-value.blue  { color: var(--blue); }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── AGENT GRID ── */
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 900px) { .agent-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .agent-grid { grid-template-columns: 1fr; } }
+
+  .agent-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    transition: all 0.25s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .agent-card.active::before { opacity: 1; }
+  .agent-card:hover { border-color: rgba(0,255,136,0.2); transform: translateY(-1px); }
+
+  .agent-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .agent-id-badge {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+  .type-tag {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+  }
+  .type-tag.trading   { background: rgba(0,255,136,0.12); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+  .type-tag.liquidity { background: rgba(77,159,255,0.12); color: var(--blue); border: 1px solid rgba(77,159,255,0.2); }
+  .type-tag.arbitrage { background: rgba(168,85,247,0.12); color: var(--purple); border: 1px solid rgba(168,85,247,0.2); }
+
+  .agent-balance {
+    font-family: var(--mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 2px;
+  }
+  .agent-address {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .agent-address:hover { color: var(--blue); }
+
+  .agent-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .mini-stat { }
+  .mini-label { font-size: 0.6rem; font-family: var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .mini-value { font-family: var(--mono); font-size: 0.82rem; color: var(--text); margin-top: 1px; }
+
+  .signal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .signal-badge.BUY  { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+  .signal-badge.SELL { background: rgba(255,68,102,0.15); color: var(--red);   border: 1px solid rgba(255,68,102,0.3); }
+  .signal-badge.HOLD { background: rgba(100,116,139,0.15); color: var(--muted); border: 1px solid rgba(100,116,139,0.2); }
+
+  .solscan-btn {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 7px;
+    background: rgba(77,159,255,0.08);
+    border: 1px solid rgba(77,159,255,0.18);
+    border-radius: 7px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--blue);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+  }
+  .solscan-btn:hover { background: rgba(77,159,255,0.15); border-color: var(--blue); }
+
+  /* ── TWO-COL LAYOUT ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── PANEL CARD ── */
+  .panel-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .panel-head {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panel-title {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text);
+  }
+  .panel-count {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  /* ── TX TABLE ── */
+  .tx-table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+  th {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 8px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(26,35,50,0.6);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .tx-type-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .tx-type-badge.BUY  { background: rgba(0,255,136,0.12); color: var(--green); }
+  .tx-type-badge.SELL { background: rgba(255,68,102,0.12); color: var(--red); }
+  .tx-type-badge.REBALANCE { background: rgba(77,159,255,0.12); color: var(--blue); }
+  .tx-type-badge.ARBITRAGE { background: rgba(168,85,247,0.12); color: var(--purple); }
+
+  .status-chip { font-size: 0.6rem; }
+  .status-chip.confirmed { color: var(--green); }
+  .status-chip.simulated { color: var(--muted); }
+
+  .sig-link { color: var(--blue); text-decoration: none; font-size: 0.65rem; }
+  .sig-link:hover { text-decoration: underline; }
+  .sig-dash { color: var(--muted); font-size: 0.65rem; }
+
+  /* ── ACTIVITY LOG ── */
+  .activity-log {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .activity-log::-webkit-scrollbar { width: 4px; }
+  .activity-log::-webkit-scrollbar-track { background: transparent; }
+  .activity-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .log-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    animation: fadeSlide 0.3s ease-out;
+  }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .log-time { color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+  .log-dot  { width: 5px; height: 5px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+  .log-dot.green  { background: var(--green); }
+  .log-dot.blue   { background: var(--blue); }
+  .log-dot.yellow { background: var(--yellow); }
+  .log-dot.red    { background: var(--red); }
+  .log-dot.purple { background: var(--purple); }
+  .log-dot.muted  { background: var(--muted); }
+  .log-msg  { color: var(--text); line-height: 1.4; word-break: break-all; }
+
+  /* ── LOADING OVERLAY ── */
+  #loading {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    transition: opacity 0.4s;
+  }
+  #loading.hidden { opacity: 0; pointer-events: none; }
+  .loader-logo {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.12em;
+  }
+  .loader-bar {
+    width: 200px;
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .loader-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    animation: loadFill 1.8s ease-in-out forwards;
+  }
+  @keyframes loadFill { from { width: 0%; } to { width: 100%; } }
+  .loader-msg { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+
+  /* ── ERROR BANNER ── */
+  #error-banner {
+    display: none;
+    background: rgba(255,68,102,0.08);
+    border: 1px solid rgba(255,68,102,0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+
+  /* ── MISC ── */
+  .empty-state {
+    padding: 30px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .flash { animation: flashGreen 0.4s ease-out; }
+  @keyframes flashGreen {
+    0%   { color: var(--green); }
+    100% { color: inherit; }
+  }
+  .scroll-table { max-height: 380px; overflow-y: auto; }
+  .scroll-table::-webkit-scrollbar { width: 4px; }
+  .scroll-table::-webkit-scrollbar-thumb { background: var(--border); }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading">
+  <div class="loader-logo">⬡ SOLANA AGENT FLEET</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-msg" id="loader-msg">Connecting to agents...</div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">⬡</div>
+    AGENT FLEET
+  </div>
+  <div class="header-right">
+    <div class="network-pill">DEVNET</div>
+    <span id="uptime-display">--</span>
+    <div class="status-pill">
+      <div class="pulse-dot" id="status-dot"></div>
+      <span id="status-text">CONNECTING</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="error-banner">⚠ Cannot reach server at localhost:3000 — make sure <code>node server.js</code> is running, then refresh.</div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat-card">
+      <div class="stat-label">Fleet SOL</div>
+      <div class="stat-value green" id="stat-sol">—</div>
+      <div class="stat-sub">across all agents</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Actions</div>
+      <div class="stat-value blue" id="stat-actions">—</div>
+      <div class="stat-sub">executed this session</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">On-Chain Txs</div>
+      <div class="stat-value" id="stat-onchain">—</div>
+      <div class="stat-sub">confirmed on devnet</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active Agents</div>
+      <div class="stat-value" id="stat-agents">—</div>
+      <div class="stat-sub">running autonomously</div>
+    </div>
+  </div>
+
+  <!-- AGENTS LABEL -->
+  <div class="section-label">Active Agents</div>
+
+  <!-- AGENT GRID -->
+  <div class="agent-grid" id="agent-grid">
+    <div class="agent-card"><div class="empty-state">Loading...</div></div>
+    <div class="agent-card"><div class="empty-state">Loading...</div></div>
+    <div class="agent-card"><div class="empty-state">Loading...</div></div>
+    <div class="agent-card"><div class="empty-state">Loading...</div></div>
+  </div>
+
+  <!-- TWO COL -->
+  <div class="two-col">
+    <!-- TRANSACTIONS -->
+    <div class="panel-card">
+      <div class="panel-head">
+        <span class="panel-title">Transaction Log</span>
+        <span class="panel-count" id="tx-count">0 txs</span>
+      </div>
+      <div class="scroll-table tx-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Agent</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Signature</th>
+            </tr>
+          </thead>
+          <tbody id="tx-body">
+            <tr><td colspan="7" class="empty-state">Waiting for transactions...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ACTIVITY LOG -->
+    <div class="panel-card">
+      <div class="panel-head">
+        <span class="panel-title">Live Activity</span>
+        <span class="panel-count" id="log-count">0 events</span>
+      </div>
+      <div class="activity-log" id="activity-log">
+        <div class="empty-state">Waiting for events...</div>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <!-- FLEET INTELLIGENCE PANEL -->
+  <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+    <!-- Agent Signal Summary -->
+    <div class="panel-card">
+      <div class="panel-head">
+        <span class="panel-title">Signal Intelligence</span>
+        <span class="panel-count" id="signal-time">live</span>
+      </div>
+      <table>
+        <thead><tr>
+          <th>Agent</th><th>Signal</th><th>Price</th><th>Short MA</th><th>Long MA</th><th>Balance</th>
+        </tr></thead>
+        <tbody id="signal-body">
+          <tr><td colspan="6" class="empty-state">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Fleet Health -->
+    <div class="panel-card">
+      <div class="panel-head">
+        <span class="panel-title">Fleet Health</span>
+        <span class="panel-count" id="health-status">checking...</span>
+      </div>
+      <table>
+        <thead><tr>
+          <th>Agent</th><th>Type</th><th>Ticks</th><th>Actions</th><th>SOL</th><th>Status</th>
+        </tr></thead>
+        <tbody id="health-body">
+          <tr><td colspan="6" class="empty-state">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+<script>
+function renderFleetIntel(agents) {
+  if (!agents || !agents.length) return;
+
+  // Signal table
+  const sigBody = document.getElementById('signal-body');
+  sigBody.innerHTML = agents.map(a => {
+    const sig   = a.state?.signal || 'HOLD';
+    const sigColor = sig === 'BUY' ? 'var(--green)' : sig === 'SELL' ? 'var(--red)' : 'var(--muted)';
+    const price = a.state?.price ? `$${parseFloat(a.state.price).toFixed(2)}` : '—';
+    const sma   = a.state?.shortMA ? `$${parseFloat(a.state.shortMA).toFixed(2)}` : '—';
+    const lma   = a.state?.longMA  ? `$${parseFloat(a.state.longMA).toFixed(2)}`  : '—';
+    return `<tr>
+      <td style="font-size:0.68rem">${a.agentId.replace('trader-','').replace('liquidity-','liq-').replace('arbitrage-','arb-')}</td>
+      <td><span style="color:${sigColor};font-weight:700">${sig}</span></td>
+      <td>${price}</td>
+      <td>${sma}</td>
+      <td>${lma}</td>
+      <td style="color:var(--green)">${(a.balance||0).toFixed(4)}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('signal-time').textContent = new Date().toLocaleTimeString();
+
+  // Health table
+  const healthBody = document.getElementById('health-body');
+  const allHealthy = agents.every(a => a.status === 'active' && a.balance > 0.2);
+  document.getElementById('health-status').textContent = allHealthy ? '✅ all systems nominal' : '⚠ check agents';
+  healthBody.innerHTML = agents.map(a => {
+    const healthy = a.status === 'active' && a.balance > 0.2;
+    return `<tr>
+      <td style="font-size:0.68rem">${a.agentId.replace('trader-','').replace('liquidity-','liq-').replace('arbitrage-','arb-')}</td>
+      <td><span style="color:var(--muted)">${a.type}</span></td>
+      <td>${a.ticks||0}</td>
+      <td>${a.actions||0}</td>
+      <td style="color:${a.balance > 0.5 ? 'var(--green)' : 'var(--yellow)'}">${(a.balance||0).toFixed(4)}</td>
+      <td><span style="color:${healthy ? 'var(--green)' : 'var(--yellow)'}">● ${a.status||'starting'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// Hook into existing fetch loop
+const _baseStatus = window.fetchAll;
+window.fetchAll = async function() {
+  await _baseStatus();
+  try {
+    const res  = await fetch(`${API}/api/status`);
+    const data = await res.json();
+    if (data.agents) renderFleetIntel(data.agents);
+  } catch(_) {}
+};
+setInterval(window.fetchAll, 3500);
+setTimeout(() => window.fetchAll(), 800);
+</script>
+
+</main>
+
+<script>
+const API = 'http://localhost:3000';
+let prevTxIds = new Set();
+let logEntries = [];
+let logCount = 0;
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function fmt(n, d = 4) { return typeof n === 'number' ? n.toFixed(d) : '—'; }
+function shortAddr(addr) { return addr ? addr.slice(0,6) + '...' + addr.slice(-4) : '—'; }
+function shortSig(sig) { return sig ? sig.slice(0,12) + '...' : null; }
+function timeStr(iso) {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12: false });
+  } catch (_) { return '—'; }
+}
+function formatUptime(s) {
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  if (h > 0) return `${h}h ${m}m`;
+  if (m > 0) return `${m}m ${sec}s`;
+  return `${sec}s`;
+}
+function flash(el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+
+// ── Agent cards ──────────────────────────────────────────────────────────────
+
+function agentColor(type) {
+  return { trading: 'green', liquidity: 'blue', arbitrage: 'purple' }[type] || 'muted';
+}
+
+function getSignal(agent) {
+  const s = agent.state || {};
+  if (agent.type === 'trading')   return s.signal || 'HOLD';
+  if (agent.type === 'arbitrage') return s.spreadPct > 1.5 ? 'BUY' : 'HOLD';
+  if (agent.type === 'liquidity') return (s.drift && Math.abs(s.drift) > 0.04) ? 'SELL' : 'HOLD';
+  return 'HOLD';
+}
+
+function renderAgents(agents) {
+  const grid = document.getElementById('agent-grid');
+  if (!agents || !agents.length) return;
+
+  grid.innerHTML = agents.map(agent => {
+    const s = agent.state || {};
+    const signal = getSignal(agent);
+    const solscanWallet = `https://solscan.io/account/${agent.address}?cluster=devnet`;
+
+    let extraRow = '';
+    if (agent.type === 'trading') {
+      extraRow = `<div class="mini-stat"><div class="mini-label">Short MA</div><div class="mini-value">$${fmt(s.shortMA,2)}</div></div>
+                  <div class="mini-stat"><div class="mini-label">Long MA</div><div class="mini-value">$${fmt(s.longMA,2)}</div></div>`;
+    } else if (agent.type === 'arbitrage') {
+      extraRow = `<div class="mini-stat"><div class="mini-label">Spread</div><div class="mini-value">${fmt(s.spreadPct,2)}%</div></div>
+                  <div class="mini-stat"><div class="mini-label">DEX-A</div><div class="mini-value">$${fmt(s.dexA,2)}</div></div>`;
+    } else if (agent.type === 'liquidity') {
+      extraRow = `<div class="mini-stat"><div class="mini-label">Pool Ratio</div><div class="mini-value">${fmt(s.poolRatio,3)}</div></div>
+                  <div class="mini-stat"><div class="mini-label">Drift</div><div class="mini-value">${fmt(s.drift,4)}</div></div>`;
+    }
+
+    return `
+      <div class="agent-card ${agent.status === 'active' ? 'active' : ''}">
+        <div class="agent-header">
+          <div class="agent-id-badge">${agent.agentId.replace('trader-','').replace('-',' ').toUpperCase()}</div>
+          <div class="type-tag ${agent.type}">${agent.type}</div>
+        </div>
+        <div class="agent-balance">${fmt(agent.balance,4)} SOL</div>
+        <div class="agent-address" onclick="window.open('${solscanWallet}','_blank')" title="View on Solscan">${shortAddr(agent.address)} ↗</div>
+        <div class="agent-stats">
+          <div class="mini-stat"><div class="mini-label">Ticks</div><div class="mini-value">${agent.ticks}</div></div>
+          <div class="mini-stat"><div class="mini-label">Actions</div><div class="mini-value">${agent.actions}</div></div>
+          ${extraRow}
+        </div>
+        <span class="signal-badge ${signal}">${signal}</span>
+        <a href="${solscanWallet}" target="_blank" class="solscan-btn">View on Solscan ↗</a>
+      </div>`;
+  }).join('');
+}
+
+// ── Transactions ──────────────────────────────────────────────────────────────
+
+function renderTxs(txs) {
+  if (!txs || !txs.length) return;
+  const tbody = document.getElementById('tx-body');
+  const newTxs = txs.filter(tx => !prevTxIds.has(tx.id));
+  newTxs.forEach(tx => {
+    prevTxIds.add(tx.id);
+    addLog(tx);
+  });
+  document.getElementById('tx-count').textContent = `${txs.length} txs`;
+
+  tbody.innerHTML = txs.slice(0,40).map(tx => {
+    const sigHtml = tx.signature && tx.solscan
+      ? `<a href="${tx.solscan}" target="_blank" class="sig-link">${shortSig(tx.signature)}</a>`
+      : `<span class="sig-dash">—</span>`;
+    return `<tr>
+      <td>${timeStr(tx.time)}</td>
+      <td>${(tx.agentId||'').replace('trader-','').replace('liquidity-','liq-').replace('arbitrage-','arb-')}</td>
+      <td><span class="tx-type-badge ${tx.type}">${tx.type}</span></td>
+      <td>${fmt(tx.amount,6)}</td>
+      <td>${tx.price ? '$'+fmt(tx.price,2) : '—'}</td>
+      <td><span class="status-chip ${tx.status}">${tx.status}</span></td>
+      <td>${sigHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Activity log ─────────────────────────────────────────────────────────────
+
+function addLog(tx) {
+  const colorMap = { trading: 'green', liquidity: 'blue', arbitrage: 'purple' };
+  const agentType = tx.agentId?.includes('alpha') || tx.agentId?.includes('beta') ? 'trading'
+    : tx.agentId?.includes('gamma') ? 'liquidity' : 'arbitrage';
+  const dot = colorMap[agentType] || 'muted';
+  const chain = tx.signature ? ' ✅ on-chain' : ' (sim)';
+  logCount++;
+  document.getElementById('log-count').textContent = `${logCount} events`;
+
+  const container = document.getElementById('activity-log');
+  if (container.querySelector('.empty-state')) container.innerHTML = '';
+
+  const entry = document.createElement('div');
+  entry.className = 'log-entry';
+  entry.innerHTML = `
+    <span class="log-time">${timeStr(tx.time)}</span>
+    <div class="log-dot ${dot}"></div>
+    <span class="log-msg">${tx.agentId} → ${tx.type} ${fmt(tx.amount,6)} SOL${chain}</span>`;
+  container.prepend(entry);
+
+  // Keep max 60 entries
+  while (container.children.length > 60) container.removeChild(container.lastChild);
+}
+
+// ── Stats strip ───────────────────────────────────────────────────────────────
+
+function updateStats(data) {
+  const agents = data.agents || [];
+  const totalSOL = agents.reduce((s, a) => s + (a.balance || 0), 0);
+  const totalActions = agents.reduce((s, a) => s + (a.actions || 0), 0);
+  const onChain = (data.transactions||[]).filter(t => t.signature).length;
+  const active = agents.filter(a => a.status === 'active').length;
+
+  const solEl = document.getElementById('stat-sol');
+  const actEl = document.getElementById('stat-actions');
+  solEl.textContent = fmt(totalSOL, 4) + ' SOL';
+  actEl.textContent = totalActions;
+  document.getElementById('stat-onchain').textContent = onChain;
+  document.getElementById('stat-agents').textContent = `${active} / ${agents.length}`;
+  document.getElementById('uptime-display').textContent = formatUptime(data.uptime || 0);
+}
+
+// ── Fetch loop ────────────────────────────────────────────────────────────────
+
+async function fetchAll() {
+  try {
+    const [statusRes, txRes] = await Promise.all([
+      fetch(`${API}/api/status`),
+      fetch(`${API}/api/transactions`),
+    ]);
+    const status = await statusRes.json();
+    const txData = await txRes.json();
+
+    document.getElementById('error-banner').style.display = 'none';
+    document.getElementById('status-dot').style.background = 'var(--green)';
+    document.getElementById('status-text').textContent = 'LIVE';
+
+    updateStats({ ...status, transactions: txData.transactions || [] });
+    renderAgents(status.agents);
+    renderTxs(txData.transactions || []);
+
+    // Hide loader
+    const loader = document.getElementById('loading');
+    if (!loader.classList.contains('hidden')) {
+      loader.classList.add('hidden');
+      setTimeout(() => loader.style.display = 'none', 500);
+    }
+
+  } catch (err) {
+    document.getElementById('error-banner').style.display = 'block';
+    document.getElementById('status-dot').style.background = 'var(--red)';
+    document.getElementById('status-text').textContent = 'OFFLINE';
+    document.getElementById('loader-msg').textContent = 'Server offline — run: node server.js';
+    setTimeout(() => {
+      const loader = document.getElementById('loading');
+      if (!loader.classList.contains('hidden')) loader.classList.add('hidden');
+      setTimeout(() => loader.style.display = 'none', 500);
+    }, 2500);
+  }
+}
+
+// Start
+fetchAll();
+setInterval(fetchAll, 3500);
+
+
+</script>
+</body>
+</html>

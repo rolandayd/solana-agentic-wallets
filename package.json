@@ -1,0 +1,32 @@
+{
+  "name": "solana-agentic-wallet",
+  "version": "1.0.0",
+  "description": "Autonomous AI agent wallets for Solana \u2014 programmatic key management, signing, and protocol interaction",
+  "main": "src/wallet/AgentWallet.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js",
+    "cli": "node cli.js",
+    "test": "node --test tests/wallet.test.js",
+    "history": "node generate-history.js"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.0",
+    "@solana/spl-token": "^0.4.6",
+    "tweetnacl": "^1.0.3",
+    "bs58": "^6.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "keywords": [
+    "solana",
+    "ai-agent",
+    "wallet",
+    "autonomous",
+    "defi"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
